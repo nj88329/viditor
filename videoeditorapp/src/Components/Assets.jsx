@@ -1,6 +1,9 @@
 import { useState , useEffect } from "react";
 import axios from "axios";
-
+import Section2 from "./Section2";
+import Section3 from "./Section2";
+import Droppable from "../utilityFunctions/Droppable.jsx";
+import Draggable from "../utilityFunctions/Draggable";
 
 const Assets = () => {
     
@@ -8,6 +11,13 @@ const Assets = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
     const [ backendFiles , setBackendFiles] = useState([]);
+    const [ droppeditem , setDroppedItems ] = useState([]);
+
+
+    const handleDrop = (item) => {
+        setDroppedItems(item);
+    };
+
 
     useEffect(() => {
         fetch("http://localhost:5000/upload/files") // Adjust the endpoint based on your backend
@@ -78,7 +88,8 @@ const Assets = () => {
     };
 
     return (
-        <div className="container">
+        
+    <div className="container">
             <div className="section section1">
                 <div>
                         <input type="file" multiple onChange={handleFileChange} />
@@ -87,19 +98,25 @@ const Assets = () => {
                         </button>         
                      <div>
                         <h3>Uploaded Files:</h3>
+            
                      <ul>
                      {uploadedFiles.map((file, index) => {
+                        
                                 const imageUrl = `http://localhost:5000/uploads/${file.filename}`; // Adjust the path accordingly
                                 return (
-                                    <li key={index}>
+                                   <li key={index}>
                                           {/* <p>{file.filename}</p> */}
-                                        <img 
+                                     <Draggable 
+                                         Item = {  <img 
                                             src={imageUrl} 
                                             alt={file.filename} 
                                             style={{ width: "50px", height: "50px", objectFit: "cover" }} 
+                                            />}
                                         />
                                     </li>
                                 );
+                              
+                            
                             })}
                     </ul>
                     </div>
@@ -109,8 +126,9 @@ const Assets = () => {
                 </div>
             </div>
         
-            <div className="section section2">Section 2</div>
-            <div className="section section3">Section 3</div>
+            <div className="section section2"><Section2 onDrop = {handleDrop} />
+            </div>
+            <div className="section section3"><Section3/></div>
         </div>
     );
 };

@@ -1,6 +1,8 @@
+// import fs from "fs";
+// import path from "path";
 
 
-export const getFiles = async((req, res)=>{
+const getFiles = (req, res)=>{
         
     const directoryPath = path.join(__dirname, "uploads");
     
@@ -13,5 +15,8 @@ export const getFiles = async((req, res)=>{
         res.status(200).json({ files: fileList });
     });
 
-})
+}
 
+
+
+module.exports = { getFiles }
